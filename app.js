@@ -1,10 +1,20 @@
 // listen for submit
-document
-  .getElementById("loan-form")
-  .addEventListener("submit", calculateResults);
+document.getElementById("loan-form").addEventListener("submit", function(e) {
+  //now its no longer an event handler so we take out e from calculateResults and remore the preventDefault method
+
+  //Hide Results - although already hidden but when we hit calculate then the results will show
+  document.getElementById("results").style.display = "none";
+
+  // Show Loader
+  document.getElementById("loading").style.display = "block";
+
+  setTimeout(calculateResults, 2000);
+
+  e.preventDefault();
+});
 
 // Calculate Results
-function calculateResults(e) {
+function calculateResults() {
   console.log("Calculating...");
   // UI Vars
   const amount = document.getElementById("amount");
@@ -26,15 +36,25 @@ function calculateResults(e) {
     monthlyPayment.value = monthly.toFixed(2); //to set value at the location and show it by 2 decimals
     totalPayment.value = (monthly * calculatedPayment).toFixed(2);
     totalInterest.value = (monthly * calculatedPayment - principal).toFixed(2);
+
+    // Show results
+    document.getElementById("results").style.display = "block";
+
+    // Hide loader
+    document.getElementById("loading").style.display = "none";
   } else {
     showError("Please Check Your numbers"); //our own custom method
   }
-
-  e.preventDefault();
 }
 
 // Show error
 function showError(error) {
+  // Show results
+  document.getElementById("results").style.display = "none";
+
+  // Hide loader
+  document.getElementById("loading").style.display = "none";
+
   // Create a div
   const errorDiv = document.createElement("div");
 
